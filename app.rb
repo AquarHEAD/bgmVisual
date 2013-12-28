@@ -12,7 +12,11 @@ get '/' do
   haml :index
 end
 
-post '/visual/?' do
+post '/' do
+  redirect "/visual/#{params[:bgmid]}"
+end
+
+get '/visual/:bgmid/?' do
   page_num = 1
   @items = []
   while true
