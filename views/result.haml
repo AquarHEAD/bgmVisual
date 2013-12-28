@@ -1,0 +1,22 @@
+!!!
+%html{lang: "en"}
+  %head
+    %meta{charset: "utf-8"}/
+    %title bgmVisual
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+    %link{href: "//cdnjs.cloudflare.com/ajax/libs/foundation/5.0.2/css/foundation.min.css", rel: "stylesheet"}/
+  %body
+    .row
+      .large-8.large-offset-2.column
+        %h1{style: "text-align: center;"}
+          bgmVisual
+        %h3{style: "text-align: center;"}
+          a visualization of your collections on bgm.tv
+    .row
+      .large-8.large-offset-2.column
+        %p
+          = @items.count
+        %ul
+          - @items.each do |item|
+            %li
+              = item.inspect
