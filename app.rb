@@ -6,6 +6,7 @@ require 'sinatra'
 require 'haml'
 require 'nokogiri'
 require 'open-uri'
+require 'json'
 
 get '/' do
   haml :index
@@ -36,6 +37,7 @@ post '/' do
       break
     end
   end
+  @items_json = @items.to_json
   haml :result
 end
 
@@ -134,5 +136,6 @@ get '/aquarhead' do
   @items << {title:"头文字D Third Stage", small:"頭文字D Third Stage", id:"9569", my_score:7.0, global_score:7.3, rank:"#899"}
   @items << {title:"头文字D Second Stage", small:"頭文字D Second Stage", id:"9568", my_score:7.0, global_score:7.5, rank:"#757"}
   @items << {title:"最終流放", small:"LAST EXILE", id:"921", my_score:10.0, global_score:8.1, rank:"#172"}
+  @items_json = @items.to_json
   haml :result
 end
