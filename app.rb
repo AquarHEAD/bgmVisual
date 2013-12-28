@@ -12,23 +12,26 @@ get '/' do
   haml :index
 end
 
-post '/' do
+post '/visual/?' do
   page_num = 1
   @items = []
   while true
     col_page = Nokogiri::HTML(open("http://bgm.tv/anime/list/#{params[:bgmid]}/collect?page=#{page_num}"))
     p_items = col_page.css("li.item")
-    p_items.each do |item|
-      info = {}
-      info[:title] = item.css("h3 a").text
-      info[:small] = item.css("h3 small").text
-      info[:id] = item["id"].split("_")[1]
-      info[:my_score] = item.css("p.collectInfo span")[0]["class"].split[0].match(/\d+/)[0].to_f
-      item_page = Nokogiri::HTML(open("http://bgm.tv/subject/#{info[:id]}"))
-      info[:global_score] = item_page.css("div.global_score span.number").text.to_f
-      info[:rank] = item_page.css("small.alarm").text
-      puts info.inspect
-      @items << info
+    for item in p_items
+      begin
+        info = {}
+        info[:title] = item.css("h3 a").text
+        info[:small] = item.css("h3 small").text
+        info[:id] = item["id"].split("_")[1]
+        info[:my_score] = item.css("p.collectInfo span")[0]["class"].split[0].match(/\d+/)[0].to_f
+        item_page = Nokogiri::HTML(open("http://bgm.tv/subject/#{info[:id]}"))
+        info[:global_score] = item_page.css("div.global_score span.number").text.to_f
+        info[:rank] = item_page.css("small.alarm").text
+        @items << info
+      rescue
+        next
+      end
     end
     p_links = col_page.css("div.page_inner a.p")
     if (p_links[-1] && p_links[-1].text == "››")
@@ -41,7 +44,7 @@ post '/' do
   haml :result
 end
 
-get '/aquarhead' do
+get '/aquarhead/?' do
   @items = []
   @items << {title:"无头骑士异闻录", small:"デュラララ!!", id:"2463", my_score:10.0, global_score:8.2, rank:"#108"}
   @items << {title:"红白黑黄", small:"RWBY", id:"75055", my_score:7.0, global_score:7.4, rank:"#777"}
